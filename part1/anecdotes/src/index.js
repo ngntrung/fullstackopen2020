@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 const Button = (props) => <button onClick = {props.event}>{props.text}</button>
-const Random = (min, max) =>{
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+const Random = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min
+
 const App = (props) => {
   const [selected, setSelected] = useState(0)
   const selectNumber = () => {

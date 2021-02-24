@@ -5,9 +5,7 @@ const Random = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min
 
 const App = (props) => {
   const [selected, setSelected] = useState(0)
-  const selectNumber = () => {
-    setSelected(Random(0, anecdotes.length - 1))}
-    console.log(selected)
+  const selectNumber = () => setSelected(Random(0, anecdotes.length - 1))
 
   return (
     <div>

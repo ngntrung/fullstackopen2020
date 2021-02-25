@@ -1,12 +1,11 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 const Button = (props) => <button onClick={props.event}>{props.text}</button>
-const Random = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min
-
 
 const App = () => {
   const [selected, setSelected] = useState(0)
-  const selectNumber = () => setSelected(Random(0, anecdotes.length - 1))
+  const random = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min
+  const selectNumber = () => setSelected(random(0, anecdotes.length - 1))
   const [points, setPoints] = useState(Array(anecdotes.length).fill(0))
   const highestVote = points.indexOf(Math.max(...points))
   const vote = (props) => {
@@ -15,8 +14,6 @@ const App = () => {
       setPoints(pointsCopy)
   }
   
-  
- 
   return (
     <div>
       <h1>Anecdote of the day</h1>

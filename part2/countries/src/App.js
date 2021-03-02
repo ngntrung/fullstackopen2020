@@ -1,8 +1,13 @@
-import logo from './logo.svg';
-import './App.css';
 import axios from 'axios'
 import React, { useState, useEffect } from 'react'
 
+const api_key = process.env.REACT_APP_API_KEY
+
+const Show = (props) => {
+  return (
+    <button onClick={props.event}>show</button>
+  )
+}
 const Search = ({value, event}) => {
   return (
     <div>
@@ -10,51 +15,43 @@ const Search = ({value, event}) => {
     </div>
   )
 }
+const Country = ({props}) => {
+  console.log(props);
+  const {name, capital, population, languages, flag} = props
+  return (
+    <div>
+    <h1>{name}</h1> 
+    <p>capital {capital}</p>
+    <p>population {population}</p>
+    <h2>languages</h2>
+    <ul>
+      {languages.map(language => <li key={language['iso639_2']}>{language.name}</li>)}
+    </ul>
+    <img src={flag} width='80px' height='80px' alt="country flag" />
+    </div>
+  )
+}
 const Countries = ({results}) => {
-  console.log(results.length)
   if (results.length > 10){
     return (
       <p>Too many matches, specify another filter</p>
     )
   } else if (results.length <= 10 && results.length > 1){
+    const showEvent = (selection) => {
+      console.log(selection)
+      return (
+        <Country props={selection} />
+      )
+    }
     return (
       results.map(country => <div key={country.name}>
-        <p>{country.name}</p>
+        <p>{country.name}<button onClick={() => showEvent({country})}>show</button></p> 
       </div>)
     )
   }
   return (
-    results.map(country => <div key={country.name}>
-      <h1>{country.name}</h1> 
-      <p>capital {country.capital}</p>
-      <p>population {country.population}</p>
-      <h2>languages</h2>
-      <ul>
-        {country.languages.map(language => <li key={language['iso639_2']}>{language.name}</li>)}
-      </ul>
-      <img src={country.flag} width='80px' height='80px' />
-      </div>)
-  )
-  /*
-  if (results.length === 1) {
-    return (
-      results.map(country => <div key={country.name}>
-      <h1>{country.name}</h1> 
-      {country.capital}
-      {country.population}
-      <h2>languages</h2>
-      <ul>
-        {country.languages.map(language => <li>{language.name}</li>)}
-      </ul>
-      </div>)
-    )
-  } else if (results.length > 10) {
-    return (
-      <p>Too many matches, specify another filter</p>
-    )
-  }
-  */
-    
+    results.map(country => <Country key={country.name} props={country} />)
+  )   
 }
 function App() {
   const [countries, setCountries] = useState([])

@@ -16,7 +16,7 @@ const Search = ({value, event}) => {
   )
 }
 const Country = ({props}) => {
-  console.log(props);
+  console.log('country',props);
   const {name, capital, population, languages, flag} = props
   return (
     <div>
@@ -31,21 +31,17 @@ const Country = ({props}) => {
     </div>
   )
 }
+
 const Countries = ({results}) => {
+  console.log('countries cpn', results);
   if (results.length > 10){
     return (
       <p>Too many matches, specify another filter</p>
     )
   } else if (results.length <= 10 && results.length > 1){
-    const showEvent = (selection) => {
-      console.log(selection)
-      return (
-        <Country props={selection} />
-      )
-    }
     return (
       results.map(country => <div key={country.name}>
-        <p>{country.name}<button onClick={() => showEvent({country})}>show</button></p> 
+        <p>{country.name}<button onClick={() => <Country key={country.name} props={country} />}>show</button></p> 
       </div>)
     )
   }
@@ -53,25 +49,57 @@ const Countries = ({results}) => {
     results.map(country => <Country key={country.name} props={country} />)
   )   
 }
+
 function App() {
   const [countries, setCountries] = useState([])
   const [searchInput, setSearchInput] = useState('')
+  const [results, setResults] = useState([])
+
+
   const handleSearchInput = (event) => {
     setSearchInput(event.target.value)
   }
+  
+  const handleClick = (selection) => {
+    setResults(results.filter(country => country.name === selection.name))
+  }
+/*setResults(countries.filter(country => country.name.toLowerCase().includes(searchInput.toLowerCase())))*/
   useEffect(() => {
     axios
       .get('https://restcountries.eu/rest/v2/all')
       .then(response => {
         console.log('promise fulfilled')
         setCountries(response.data)
+        setResults(response.data)
       })
   }, [])
-  const results = countries.filter(country => country.name.toLowerCase().includes(searchInput.toLowerCase()))
+  
+  useEffect(() => {
+      setResults(countries.filter(country => country.name.toLowerCase().includes(searchInput.toLowerCase())))
+  },[searchInput])
+  
+  if (results.length > 10){
+    return (
+      <div>
+        <Search value={searchInput} event= {handleSearchInput}/>
+        <p>Too many matches, specify another filter</p>
+      </div>
+      
+    )
+  }else if (results.length <= 10 && results.length > 1){
+    return (
+      <div>
+        <Search value={searchInput} event= {handleSearchInput}/>
+        {results.map(country => <div key={country.name}>
+        <p>{country.name} <button onClick={() => handleClick(country)}>show</button></p> 
+        </div>)}
+      </div>
+    )
+  }
   return (
     <div>
-    <Search value={searchInput} event= {handleSearchInput}/>
-    <Countries results={results}/>
+      <Search value={searchInput} event= {handleSearchInput}/>
+      {results.map(country => <Country key={country.name} props={country} />)}
     </div>
   );
 }

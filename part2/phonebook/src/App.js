@@ -1,4 +1,3 @@
-import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import personService from './services/services'
 
@@ -40,21 +39,35 @@ const App = () => {
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ searchInput, setSearchInput ] = useState('')
-  console.log('render persons', persons);
+
   useEffect(() => {
     personService
       .get()
       .then(response => {
-        console.log('promise fulfilled')
         setPersons(response.data)
       })
   }, [])
 
   const addPersonEvent = (event) => {
     event.preventDefault()
-    const check = persons.some(person => person['name'] === `${newName}`)
-    if (check) {
-      alert(`${newName} is already added to phonebook`)
+    const existCheck = persons.some(person => person['name'] === `${newName}`)
+    
+    if (existCheck) {
+      if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)){
+        const personObj = persons.find(person => person['name'] === newName)
+        personObj.number = newNumber
+
+        personService
+        .update(personObj.id, personObj)
+        .then(
+          setNewName(''),
+          setNewNumber('')
+        )
+        .catch(error => {
+          console.log(error);
+          alert('Oops! There is something wrong. Please try again')
+        })
+      }
     } else {
       const personObj = {
         name: newName,
@@ -75,20 +88,15 @@ const App = () => {
   }
 
   const deletePersonEvent = (deletePerson) => {
-    console.log('persons before delete',persons);
-    const deletePersonId = deletePerson.id
     if (window.confirm(`Delete ${deletePerson.name}?`)) {
       personService
       .remove(deletePerson.id)
-      .then(response=>{
-        console.log('successful')
-        console.log(response);
-        console.log('person id to delete',deletePerson.id);
-        console.log('person after delete', persons.filter(person => person.id === {deletePersonId}));
-        setPersons(persons.filter(person => person !== {deletePerson}))
-      })
+      .then(
+        setPersons(persons.filter(person => person !== deletePerson))
+      )
       .catch(error => {
-        console.log(error);
+        console.log(error)
+        alert('Oops! There is something wrong. Please try again')
       })
     }
   }

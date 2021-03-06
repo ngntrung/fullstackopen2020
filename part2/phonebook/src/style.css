@@ -1,0 +1,16 @@
+.noti {
+    font-size: 20px;
+    border: solid 2px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+}
+.notiSuccess{
+    color: white;
+    background-color: green
+}
+
+.notiFail{
+    color: white;
+    background-color: red
+}

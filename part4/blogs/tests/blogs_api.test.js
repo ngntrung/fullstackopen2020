@@ -44,15 +44,8 @@ const initialBlogs = [
         url: "http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html",
         likes: 0,
         __v: 0
-      },
-      {
-        _id: "5a422bc61b54a676234d17fc",
-        title: "Type wars",
-        author: "Robert C. Martin",
-        url: "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html",
-        likes: 2,
-        __v: 0
-      }  
+      }
+      
 ]
 
 beforeEach(async () => {
@@ -68,6 +61,30 @@ test('GET request to the api', async() => {
         .get('/api/blogs')
         .expect(200)
         .expect('Content-Type', /application\/json/)
+})
+
+test('unique identifier property', async() => {
+    const response = await api.get('/api/blogs')
+    expect(response.body[0].id).toBeDefined()
+})
+
+test('POST request to the api', async() => {
+    const blogObject = {
+        _id: "5a422bc61b54a676234d17fc",
+        title: "Type wars",
+        author: "Robert C. Martin",
+        url: "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html",
+        likes: 2,
+        __v: 0
+    }
+
+    await api
+        .post('/api/blogs')
+        .expect(201)
+    const response = await api.get('/api/blogs')
+    const content = response.body.map(r => r.id)
+    expect(response.body).toHaveLength(initialBlogs.length + 1)
+    expect(content).toContain('5a422bc61b54a676234d17fc')
 })
 
 afterAll(() => {

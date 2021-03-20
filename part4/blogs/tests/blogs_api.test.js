@@ -80,11 +80,48 @@ test('POST request to the api', async() => {
 
     await api
         .post('/api/blogs')
+        .send(blogObject)
         .expect(201)
     const response = await api.get('/api/blogs')
-    const content = response.body.map(r => r.id)
+    const content = response.body.map(r => r.title)
     expect(response.body).toHaveLength(initialBlogs.length + 1)
-    expect(content).toContain('5a422bc61b54a676234d17fc')
+    expect(content).toContain('Type wars')
+})
+
+test('verify likes property', async() => {
+    const blogObject = {
+        _id: "5a422bc61b54a676234d17fc",
+        title: "Type wars",
+        author: "Robert C. Martin",
+        url: "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html",
+        __v: 0
+    }
+    
+    await api
+        .post('/api/blogs')
+        .send(blogObject)
+        .expect(201)
+    
+    const response = await api.get('/api/blogs')
+    const content = response.body.find(r => r.id === '5a422bc61b54a676234d17fc')
+    console.log(content)
+    const properties = Object.keys(content)
+    expect(properties).toContain('likes')
+    expect(content.likes).toBe(0)
+})
+
+test('verify title and url properties', async() => {
+    const blogObject = {
+        _id: "5a422bc61b54a676234d17fc",
+        author: "Robert C. Martin",
+        likes: 2,
+        __v: 0
+    }
+
+    await api
+        .post('/api/blogs')
+        .send(blogObject)
+        .expect(400)
 })
 
 afterAll(() => {

@@ -1,5 +1,5 @@
 ###
-GET http://localhost:3001/api/blogs
+GET http://localhost:3003/api/blogs
 
 ###
 POST http://localhost:3001/api/blogs
@@ -14,3 +14,15 @@ Content-Type: application/json
 
 ###
 
+DELETE http://localhost:3003/api/blogs/604c68003b1a790bbbd40a22
+
+###
+PUT http://localhost:3003/api/blogs/604c68063b1a790bbbd40a23
+Content-Type: application/json
+
+{
+    "title": "Blog post tetst 5",
+    "author": "no two",
+    "url": "",
+    "likes": 15
+}

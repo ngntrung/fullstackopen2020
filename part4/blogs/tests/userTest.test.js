@@ -4,7 +4,7 @@ const helper = require('../utils/userHelper')
 const supertest = require('supertest')
 const app = require('../app')
 const api = supertest(app)
-
+const mongoose = require('mongoose')
 
 //...
 
@@ -22,7 +22,7 @@ describe('when there is initially one user in db', () => {
 
     await user.save()
   })
-  jest.useFakeTimers()
+
   test('creation succeeds with a fresh username', async () => {
     const usersAtStart = await helper.usersInDb()
  
@@ -45,5 +45,28 @@ describe('when there is initially one user in db', () => {
     expect(usernames).toContain(newUser.username)
   })
 
+  test('valid user creation', async () => {
+    const usersAtStart = await helper.usersInDb()
+
+    const newUser = {
+      username: 'db',
+      name: 'Dumbledore Bold',
+      password: 'pw',
+    }
+
+    await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+    
+    const usersAtEnd = await helper.usersInDb()
+    expect(usersAtEnd).toHaveLength(usersAtStart.length)
+
+    const usernames = usersAtEnd.map(u => u.username)
+    expect(usernames).toEqual(expect.not.stringContaining(newUser.username))
+  })
+afterAll((done) => {
+  mongoose.connection.close()
+})
 })
 

@@ -2,14 +2,15 @@
 GET http://localhost:3003/api/blogs
 
 ###
-POST http://localhost:3001/api/blogs
+POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-    "title": "Blog post tetst 4",
-    "author": "no one",
-    "url": "",
-    "likes": 0
+    "title": "Blog post tetst 5",
+    "author": "Ron Wesley",
+    "url": "http://google.com/blog_test_5",
+    "likes": 0,
+    "userId": "6059bc0400fbec5321456cde"
 }
 
 ###

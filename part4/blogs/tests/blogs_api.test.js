@@ -70,7 +70,6 @@ test('unique identifier property', async() => {
 
 test('POST request to the api', async() => {
     const blogObject = {
-        _id: "5a422bc61b54a676234d17fc",
         title: "Type wars",
         author: "Robert C. Martin",
         url: "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html",
@@ -80,6 +79,7 @@ test('POST request to the api', async() => {
 
     await api
         .post('/api/blogs')
+        .set('Authorization', 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvbiIsImlkIjoiNjA1OWJjMDQwMGZiZWM1MzIxNDU2Y2RlIiwiaWF0IjoxNjE2NTk4Mzk2fQ.W4gnIGAvAcwGgvg9RA5OnZouoMYC6rI-QA61ybOApLc')
         .send(blogObject)
         .expect(201)
     const response = await api.get('/api/blogs')
@@ -90,7 +90,6 @@ test('POST request to the api', async() => {
 
 test('verify likes property', async() => {
     const blogObject = {
-        _id: "5a422bc61b54a676234d17fc",
         title: "Type wars",
         author: "Robert C. Martin",
         url: "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html",
@@ -99,6 +98,7 @@ test('verify likes property', async() => {
     
     await api
         .post('/api/blogs')
+        .set('Authorization', 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvbiIsImlkIjoiNjA1OWJjMDQwMGZiZWM1MzIxNDU2Y2RlIiwiaWF0IjoxNjE2NTk4Mzk2fQ.W4gnIGAvAcwGgvg9RA5OnZouoMYC6rI-QA61ybOApLc')
         .send(blogObject)
         .expect(201)
     
@@ -112,7 +112,6 @@ test('verify likes property', async() => {
 
 test('verify title and url properties', async() => {
     const blogObject = {
-        _id: "5a422bc61b54a676234d17fc",
         author: "Robert C. Martin",
         likes: 2,
         __v: 0
@@ -120,6 +119,7 @@ test('verify title and url properties', async() => {
 
     await api
         .post('/api/blogs')
+        .set('Authorization', 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvbiIsImlkIjoiNjA1OWJjMDQwMGZiZWM1MzIxNDU2Y2RlIiwiaWF0IjoxNjE2NTk4Mzk2fQ.W4gnIGAvAcwGgvg9RA5OnZouoMYC6rI-QA61ybOApLc')
         .send(blogObject)
         .expect(400)
 })

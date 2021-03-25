@@ -1,7 +1,9 @@
+const { request } = require('express')
 const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
 const Blog = require('../models/blog_model')
+const User = require('../models/user_model')
 const api = supertest(app)
 
 const initialBlogs = [
@@ -47,13 +49,29 @@ const initialBlogs = [
       }
       
 ]
+let token = null
 
 beforeEach(async () => {
+    
     await Blog.deleteMany({})
     
     const blogObjects = initialBlogs.map(blog => new Blog(blog))
     const promiseArray = blogObjects.map(blog => blog.save())
     await Promise.all(promiseArray)
+
+})
+
+beforeEach(function(done){
+    api
+        .post('/api/login')
+        .send({
+            username: "usertest",
+            password: "password"
+        })
+        .end((error, response) => {
+            token = response.body.token
+            done()
+        })
 })
 
 test('GET request to the api', async() => {
@@ -79,7 +97,7 @@ test('POST request to the api', async() => {
 
     await api
         .post('/api/blogs')
-        .set('Authorization', 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvbiIsImlkIjoiNjA1OWJjMDQwMGZiZWM1MzIxNDU2Y2RlIiwiaWF0IjoxNjE2NTk4Mzk2fQ.W4gnIGAvAcwGgvg9RA5OnZouoMYC6rI-QA61ybOApLc')
+        .set('Authorization', 'bearer ' + token)
         .send(blogObject)
         .expect(201)
     const response = await api.get('/api/blogs')
@@ -98,13 +116,12 @@ test('verify likes property', async() => {
     
     await api
         .post('/api/blogs')
-        .set('Authorization', 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvbiIsImlkIjoiNjA1OWJjMDQwMGZiZWM1MzIxNDU2Y2RlIiwiaWF0IjoxNjE2NTk4Mzk2fQ.W4gnIGAvAcwGgvg9RA5OnZouoMYC6rI-QA61ybOApLc')
+        .set('Authorization', 'bearer ' + token)
         .send(blogObject)
         .expect(201)
     
     const response = await api.get('/api/blogs')
-    const content = response.body.find(r => r.id === '5a422bc61b54a676234d17fc')
-    console.log(content)
+    const content = response.body.find(r => r.title === 'Type wars')
     const properties = Object.keys(content)
     expect(properties).toContain('likes')
     expect(content.likes).toBe(0)
@@ -119,9 +136,23 @@ test('verify title and url properties', async() => {
 
     await api
         .post('/api/blogs')
-        .set('Authorization', 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvbiIsImlkIjoiNjA1OWJjMDQwMGZiZWM1MzIxNDU2Y2RlIiwiaWF0IjoxNjE2NTk4Mzk2fQ.W4gnIGAvAcwGgvg9RA5OnZouoMYC6rI-QA61ybOApLc')
+        .set('Authorization', 'bearer ' + token)
         .send(blogObject)
         .expect(400)
+})
+
+test('verify authentication', async () => {
+    const blogObject = {
+        title: "Type wars",
+        author: "Robert C. Martin",
+        url: "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html",
+        __v: 0
+    }
+
+    await api
+        .post('/api/blogs')
+        .send(blogObject)
+        .expect(401)
 })
 
 afterAll(() => {

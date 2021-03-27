@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import './index.css'
 
-const Notification = ({message}) => (
-  <div>
-    <p>{message}</p>
+const Notification = ({message, type}) => (
+
+  <div className= 'notification success'>
+    <h1>{message}</h1>
   </div>
 
 )

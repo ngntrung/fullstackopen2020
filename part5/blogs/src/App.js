@@ -1,16 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
+import Toggle from './components/Toggle'
+import LoginForm from './components/LoginForm'
+import BlogForm from './components/BlogForm'
+import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import './index.css'
 
-const Notification = ({message, type}) => (
-
-  <div className= 'notification success'>
-    <h1>{message}</h1>
-  </div>
-
-)
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
@@ -87,66 +84,46 @@ const App = () => {
     }
     
   }
-  const loginForm = () => {
-    return (
-      <div>
-        <h2>Log in to application</h2>
-        <form onSubmit = {handleLogin}>
-          <div>
-            username
-              <input type="text" value={username} name="Username" onChange={({target}) => setUsername(target.value)}/>
-          </div>
-          <div>
-            password
-              <input type="password" value={password} name="Password" onChange={({target}) => setPassword(target.value)}/>
-          </div>
-          <button type="submit">Login</button>
-        </form>
-      </div>
-    )
-  }
-
-  const blogForm = () => (
-    <div>
-      <h2>create new</h2>
-      <form onSubmit = {addBlog}>
-        <div>
-          title
-          <input value = {newBlogTitle} onChange = {({target}) => setBlogTitle(target.value)} name = "title" />
-        </div>
-        <div>
-          author
-          <input value = {newBlogAuthor} onChange = {({target}) => setBlogAuthor(target.value)} name = "author" />
-        </div>
-        <div>
-          url
-          <input value = {newBlogUrl} onChange = {({target}) => setBlogUrl(target.value)} name = "url" />
-        </div>
-        <button type = "submit">Save</button>
-      </form>
-    </div>
-    
-  )
-
+  
   return (
     <div>
     <Notification message = {errorMessage} />
     {
       user === null ?
-        loginForm() :
-        <div>
-          <h2>blogs</h2>
-          <p>{user.name} logged in <button onClick = {logoutEvent}>Logout</button></p>
-          {blogForm()}
-          {blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} />
-          )}
-  
-        </div>
-        
+      <div>
+        <Toggle buttonLabel = 'login'>
+          <LoginForm 
+            handleSubmit = {handleLogin}
+            username = {username}
+            password = {password}
+            handleUsernameChange = {({target}) => setUsername(target.value)}
+            handlePasswordChange = {({target}) => setPassword(target.value)}
+          />
+        </Toggle>
+      </div>
+      :
+      <div>
+        <h2>blogs</h2>
+        <p>{user.name} logged in <button onClick = {logoutEvent}>Logout</button></p>
+        <Toggle buttonLabel = 'new blog'>
+          <BlogForm
+            handleSubmit = {addBlog}
+            blogTitle = {newBlogTitle}
+            blogAuthor = {newBlogAuthor}
+            blogUrl = {newBlogUrl}
+            handleBlogTitle = {({target}) => setBlogTitle(target.value)}
+            handleBlogAuthor = {({target}) => setBlogAuthor(target.value)}
+            handleBlogUrl = {({target}) => setBlogUrl(target.value)}
+          />
+        </Toggle>
+        {blogs.map(blog =>
+          <Blog key={blog.id} blog={blog} />
+        )}
+      </div>
     }
       
     </div>
+
   )
 }
 

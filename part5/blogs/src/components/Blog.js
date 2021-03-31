@@ -1,8 +1,7 @@
 import React, {useState} from 'react'
-const Blog = ({blog}) => {
-  console.log(blog.user);
+const Blog = ({blog, user}) => {
+  console.log(user.name);
   const [visible, setVisibility] = useState(false)
-  const [buttonText, setButtonText] = useState('view')
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -14,9 +13,8 @@ const Blog = ({blog}) => {
   const toggleDetail = () => {
     console.log('hello')
     setVisibility(!visible)
-    setButtonText('hide')
   }
-
+  const buttonText = visible ? 'hide' : 'view'
   const hideWhenVisible = { display : visible ? 'none' : '' }
   const showWhenVisible = { display : visible ? '' : 'none'}
 
@@ -25,10 +23,10 @@ const Blog = ({blog}) => {
     <div>
       {blog.title} {blog.author} <button onClick = {toggleDetail} > {buttonText} </button>
     </div>
-    <div style={hideWhenVisible}>
-      {blog.url}
-      likes {blog.likes} <button>like</button>
-      
+    <div style={showWhenVisible}>
+      <p>{blog.url}</p>
+      <p>likes {blog.likes} <button>like</button></p>
+
     </div>
   </div>
   )

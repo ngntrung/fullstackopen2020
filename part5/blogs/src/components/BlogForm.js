@@ -1,23 +1,57 @@
-const BlogForm = ({handleSubmit, blogTitle, blogAuthor, blogUrl, handleBlogTitle, handleBlogAuthor, handleBlogUrl}) => (
-    <div>
-      <h2>create new</h2>
-      <form onSubmit = {handleSubmit}>
+import React, {useState} from 'react'
+
+const BlogForm = ({createBlog}) => {
+    const [newBlogTitle, setBlogTitle] = useState('')
+    const [newBlogAuthor, setBlogAuthor] = useState('')
+    const [newBlogUrl, setBlogUrl] = useState('')
+
+    const handleBlogTitle = (event) => {
+        setBlogTitle(event.target.value)
+    }
+
+    const handleBlogAuthor = (event) => {
+        setBlogAuthor(event.target.value)
+    }
+
+    const handleBlogUrl = (event) => {
+        setBlogUrl(event.target.value)
+    }
+
+    const addBlog = (event) => {
+        event.preventDefault()
+        createBlog({
+          title: newBlogTitle,
+          author: newBlogAuthor,
+          url: newBlogUrl
+        })
+        setBlogTitle('')
+        setBlogAuthor('')
+        setBlogUrl('')
+        
+    }
+
+    return (
         <div>
-          title
-          <input value = {blogTitle} onChange = {handleBlogTitle} name = "title" />
+            <h2>create new</h2>
+            <form onSubmit = {addBlog}>
+                <div>
+                title
+                <input value = {newBlogTitle} onChange = {handleBlogTitle} name = "title" />
+                </div>
+                <div>
+                author
+                <input value = {newBlogAuthor} onChange = {handleBlogAuthor} name = "author" />
+                </div>
+                <div>
+                url
+                <input value = {newBlogUrl} onChange = {handleBlogUrl} name = "url" />
+                </div>
+                <button type = "submit">Save</button>
+            </form>
         </div>
-        <div>
-          author
-          <input value = {blogAuthor} onChange = {handleBlogAuthor} name = "author" />
-        </div>
-        <div>
-          url
-          <input value = {blogUrl} onChange = {handleBlogUrl} name = "url" />
-        </div>
-        <button type = "submit">Save</button>
-      </form>
-    </div>
+    )
     
-)
+    
+}
 
 export default BlogForm

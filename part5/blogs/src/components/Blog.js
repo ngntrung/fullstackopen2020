@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
-const Blog = ({blog, user}) => {
-  console.log(user.name);
+const Blog = ({blog}) => {
   const [visible, setVisibility] = useState(false)
+  
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -26,7 +26,7 @@ const Blog = ({blog, user}) => {
     <div style={showWhenVisible}>
       <p>{blog.url}</p>
       <p>likes {blog.likes} <button>like</button></p>
-
+      <p>{blog.user ? blog.user.name : 'loading name...'}</p>
     </div>
   </div>
   )

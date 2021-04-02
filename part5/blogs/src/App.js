@@ -25,6 +25,7 @@ const App = () => {
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
       blogService.setToken(user.token)
+      blogService.setUserId(user.user_id)
     }
   }, [])
 
@@ -49,6 +50,7 @@ const App = () => {
     }
   }
   const blogFormRef = useRef()
+
   const addBlog = async (blogObject) => {
     try{
       const blog = await blogService.create(blogObject)
@@ -57,7 +59,6 @@ const App = () => {
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
-      console.log(blogFormRef.current)
       blogFormRef.current.toggleVisibility()
 
     } catch (exception){
@@ -67,7 +68,35 @@ const App = () => {
       }, 5000) 
     }
   }
+
+  const likeBlog = async(blogObject) => {
+    try{
+      await blogService.update(blogObject)
+      const blogs = await blogService.getAll()
+      setBlogs(blogs)
+
+    }catch (exception) {
+      setErrorMessage(exception)
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000) 
+    }
+  }
   
+  const removeBlog = async(blogObject) => {
+    console.log('remove')
+    try{
+      await blogService.remove(blogObject)
+      const blogs = await blogService.getAll()
+      setBlogs(blogs)
+    } catch (exception) {
+      console.log(exception)
+      setErrorMessage(exception)
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000) 
+    }
+  }
 
   return (
     <div>
@@ -87,7 +116,7 @@ const App = () => {
           <BlogForm createBlog={addBlog} />
         </Toggle>
         {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} />
+          <Blog key={blog.id} blog={blog} likeBlog={likeBlog} removeBlog={removeBlog}/>
         )}
       </div>
     }

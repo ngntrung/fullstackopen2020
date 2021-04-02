@@ -31,10 +31,12 @@ blogsRouter.post('/', async (request, response) => {
 })
 
 blogsRouter.delete('/:id', async (request, response) => {
-  const user = request.user
+  console.log('request',request.body.user)
+  const user = request.body.user
   const blog = await Blog.findById(request.params.id)
-  
-  if (user._id.toString() === blog.user.toString()){
+  console.log('user from backend', user);
+  console.log('blog from backend', blog);
+  if (user.toString() === blog.user.toString()){
     try{
       await Blog.deleteOne({_id: request.params.id})
       response.status(204).end()

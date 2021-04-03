@@ -34,7 +34,7 @@ const update = async newObject => {
 }
 
 const remove = async newObject => {
-  const response = await axios.delete(`${baseUrl}/${newObject.id}`, {data:{user: user_id}}, config)
+  const response = await axios.delete(`${baseUrl}/${newObject.id}`, newObject, config)
   return response.status
 }
 

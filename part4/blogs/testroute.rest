@@ -35,8 +35,8 @@ POST http://localhost:3003/api/users
 Content-Type: application/json
 
 {
-    "username": "hagrid",
-    "name": "Hagrid",
+    "username": "harry",
+    "name": "Harry Potter",
     "password": "password"
 }
 
@@ -51,10 +51,9 @@ Content-Type: application/json
 ###
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvbiIsImlkIjoiNjA1OWJjMDQwMGZiZWM1MzIxNDU2Y2RlIiwiaWF0IjoxNjE2NTkzODgwfQ.U9KKC9Nms4Xqj6O3uhgVXFsReaQU3pV02TkjtC7041I
-
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvbiIsImlkIjoiNjA1OWJjMDQwMGZiZWM1MzIxNDU2Y2RlIiwiaWF0IjoxNjE3NDI0NjU1fQ.Uy6yX0r8dCHvqO7JUCGc8TbRkdHSJGused6CNuNxVA8
 {
-    "title": "Blog post tetst 21",
-    "author": "Ron Wesley",
-    "url": "http://google.com/blog_test_21",
+    "title": "Blog post tetst 50",
+    "author": "Trung",
+    "url": "http://google.com/blog_test_21"
 }

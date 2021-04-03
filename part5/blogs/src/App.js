@@ -84,20 +84,17 @@ const App = () => {
   }
   
   const removeBlog = async(blogObject) => {
-    console.log('remove')
     try{
       await blogService.remove(blogObject)
       const blogs = await blogService.getAll()
       setBlogs(blogs)
     } catch (exception) {
-      console.log(exception)
       setErrorMessage(exception)
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000) 
     }
   }
-
   return (
     <div>
     <Notification message = {errorMessage} />
@@ -113,10 +110,10 @@ const App = () => {
         <h2>blogs</h2>
         <p>{user.name} logged in <button onClick = {logoutEvent}>Logout</button></p>
         <Toggle buttonLabel = 'new blog' ref={blogFormRef}>
-          <BlogForm createBlog={addBlog} />
+          <BlogForm createBlog={addBlog} loggedinUser = {user} />
         </Toggle>
         {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} likeBlog={likeBlog} removeBlog={removeBlog}/>
+          <Blog key={blog.id} blog={blog} loggedinUser = {user} likeBlog={likeBlog} removeBlog={removeBlog}/>
         )}
       </div>
     }

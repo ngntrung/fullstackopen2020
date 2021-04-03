@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 const Blog = ({blog, likeBlog, removeBlog, loggedinUser}) => {
+  
   const [visible, setVisibility] = useState(false)
   
   const blogStyle = {
@@ -47,8 +48,8 @@ const Blog = ({blog, likeBlog, removeBlog, loggedinUser}) => {
     <div style={showWhenVisible}>
       <p>{blog.url}</p>
       <p>likes {blog.likes} <button onClick = {likeEvent}>like</button></p>
-      <p>{blog.user ? blog.user.name : 'loading name...'}</p>
-      <div>{blog.user && loggedinUser.user_id === blog.user.id ? <button onClick = {removeEvent}>remove</button> : null }</div>
+      <p>{blog.user.name}</p>
+      <div>{blog.user && loggedinUser.user.id === blog.user.id ? <button onClick = {removeEvent}>remove</button> : null }</div>
     </div>
   </div>
   )

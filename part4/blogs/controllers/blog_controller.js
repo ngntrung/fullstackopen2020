@@ -10,13 +10,12 @@ blogsRouter.get('/', async (request, response) => {
 
 blogsRouter.post('/', async (request, response) => {
   const body = request.body
-  console.log('body is here',body)
   const user = request.user
-  console.log('user is here', user)
   const blog = new Blog({
     title: body.title,
     author: body.author,
     url: body.url,
+    user: user
   })
 
   try{
@@ -34,6 +33,7 @@ blogsRouter.post('/', async (request, response) => {
 blogsRouter.delete('/:id', async (request, response) => {
   const user = request.user
   const blog = await Blog.findById(request.params.id)
+
   if (user._id.toString() === blog.user.toString()){
     try{
       await Blog.deleteOne({_id: request.params.id})

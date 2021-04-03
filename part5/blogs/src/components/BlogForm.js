@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 
-const BlogForm = ({createBlog, loggedinUser} ) => {
-    console.log(loggedinUser)
+const BlogForm = ({createBlog}) => {
+    
     const [newBlogTitle, setBlogTitle] = useState('')
     const [newBlogAuthor, setBlogAuthor] = useState('')
     const [newBlogUrl, setBlogUrl] = useState('')

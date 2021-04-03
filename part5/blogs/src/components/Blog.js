@@ -16,7 +16,6 @@ const Blog = ({blog, likeBlog, removeBlog, loggedinUser}) => {
   }
 
   const buttonText = visible ? 'hide' : 'view'
-  const hideWhenVisible = { display : visible ? 'none' : '' }
   const showWhenVisible = { display : visible ? '' : 'none'}
 
   const likeEvent = (event) => {

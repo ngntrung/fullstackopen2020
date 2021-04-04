@@ -16,7 +16,7 @@ const App = () => {
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
-    )  
+    )
   }, [])
 
   useEffect(() => {
@@ -35,7 +35,7 @@ const App = () => {
 
   const handleLogin = async (loginObject) => {
     try {
-      const user = await loginService.login(
+      const user = await loginService(
         loginObject
       )
       window.localStorage.setItem('loggedBlogUser', JSON.stringify(user))
@@ -64,7 +64,7 @@ const App = () => {
       setErrorMessage(exception)
       setTimeout(() => {
         setErrorMessage(null)
-      }, 5000) 
+      }, 5000)
     }
   }
 
@@ -78,10 +78,10 @@ const App = () => {
       setErrorMessage(exception)
       setTimeout(() => {
         setErrorMessage(null)
-      }, 5000) 
+      }, 5000)
     }
   }
-  
+
   const removeBlog = async(blogObject) => {
     try{
       await blogService.remove(blogObject)
@@ -91,32 +91,32 @@ const App = () => {
       setErrorMessage(exception)
       setTimeout(() => {
         setErrorMessage(null)
-      }, 5000) 
+      }, 5000)
     }
   }
   return (
     <div>
-    <Notification message = {errorMessage} />
-    {
-      user === null ?
-      <div>
-        <Toggle buttonLabel = 'login'>
-          <LoginForm loginEvent={handleLogin}/>
-        </Toggle>
-      </div>
-      :
-      <div>
-        <h2>blogs</h2>
-        <p>{user.name} logged in <button onClick = {logoutEvent}>Logout</button></p>
-        <Toggle buttonLabel = 'new blog' ref={blogFormRef}>
-          <BlogForm createBlog={addBlog} loggedinUser = {user} />
-        </Toggle>
-        {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} likeBlog={likeBlog} removeBlog={removeBlog} loggedinUser={user} />
-        )}
-      </div>
-    }
-      
+      <Notification message = {errorMessage} />
+      {
+        user === null ?
+          <div>
+            <Toggle buttonLabel = 'login'>
+              <LoginForm loginEvent={handleLogin}/>
+            </Toggle>
+          </div>
+          :
+          <div>
+            <h2>blogs</h2>
+            <p>{user.name} logged in <button onClick = {logoutEvent}>Logout</button></p>
+            <Toggle buttonLabel = 'new blog' ref={blogFormRef}>
+              <BlogForm createBlog={addBlog} loggedinUser = {user} />
+            </Toggle>
+            {blogs.map(blog =>
+              <Blog key={blog.id} blog={blog} likeBlog={likeBlog} removeBlog={removeBlog} loggedinUser={user} />
+            )}
+          </div>
+      }
+
     </div>
 
   )

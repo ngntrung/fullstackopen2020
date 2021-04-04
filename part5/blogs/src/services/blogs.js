@@ -6,7 +6,7 @@ let config = null
 
 const setToken = newToken => {
   token = `bearer ${newToken}`
-  config = {headers: { Authorization: token }}
+  config = { headers: { Authorization: token } }
 }
 
 const getAll = async () => {
@@ -31,5 +31,5 @@ const remove = async newObject => {
   const response = await axios.delete(`${baseUrl}/${newObject.id}`, config)
   return response.status
 }
-
-export default { getAll, create, setToken, update, remove}
+const blogService = { getAll, create, setToken, update, remove }
+export default blogService

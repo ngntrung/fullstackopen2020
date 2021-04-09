@@ -108,7 +108,7 @@ const App = () => {
           <div>
             <h2>blogs</h2>
             <p>{user.name} logged in <button onClick = {logoutEvent}>Logout</button></p>
-            <Toggle buttonLabel = 'new blog' ref={blogFormRef}>
+            <Toggle buttonLabel = 'add new blog' ref={blogFormRef}>
               <BlogForm createBlog={addBlog} loggedinUser = {user} />
             </Toggle>
             {blogs.map(blog =>

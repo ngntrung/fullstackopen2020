@@ -1,7 +1,7 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { addNewItem } from '../reducers/anecdoteReducer'
-import { notiSet, notiRemove } from '../reducers/notificationReducer'
+import { notiSet } from '../reducers/notificationReducer'
 
 const NewAnecdote = () => {
   const dispatch = useDispatch()
@@ -11,8 +11,7 @@ const NewAnecdote = () => {
     const content = event.target.content.value
     event.target.content.value = ''
     dispatch(addNewItem(content))
-    dispatch(notiSet(`you created ${content}`))
-    setTimeout(() => dispatch(notiRemove()), 5000)
+    dispatch(notiSet(`you created ${content}`, 10))
   }
   return (
     <div>

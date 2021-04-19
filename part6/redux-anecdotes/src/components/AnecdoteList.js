@@ -1,14 +1,21 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { likeItem } from '../reducers/anecdoteReducer'
+import { notiSet } from '../reducers/notificationReducer'
 
 const AnecdoteList = () => {
   const dispatch = useDispatch()
-  const anecdotes = useSelector(state => state).sort(function(a, b){
+  const like = (id, object) => {
+    dispatch(likeItem(id))
+    dispatch(notiSet(`you voted ${object}`, 10))
+  }
+  const filter = useSelector(state => state.filter)
+  const initialAnecdotes = useSelector(state => state.anecdotes).sort(function(a, b){
     return b.votes - a.votes
   })
-  return (
+  const anecdotes = filter === null ? initialAnecdotes : initialAnecdotes.filter(item => item.content.includes(filter))
 
+  return (
     anecdotes.map(anecdote =>
       <div key={anecdote.id}>
         <div>
@@ -16,7 +23,7 @@ const AnecdoteList = () => {
         </div>
         <div>
         has {anecdote.votes}
-          <button onClick={() => dispatch(likeItem(anecdote.id)) }>vote</button>
+          <button onClick={() => like(anecdote.id, anecdote.content) }>vote</button>
         </div>
       </div>
     )

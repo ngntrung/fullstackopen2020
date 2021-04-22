@@ -7,7 +7,7 @@ const AnecdoteList = () => {
   const dispatch = useDispatch()
   const like = (id, object) => {
     dispatch(likeItem(id))
-    dispatch(notiSet(`you voted ${object}`, 10))
+    dispatch(notiSet(`you voted ${object}`, 5))
   }
   const filter = useSelector(state => state.filter)
   const initialAnecdotes = useSelector(state => state.anecdotes).sort(function(a, b){

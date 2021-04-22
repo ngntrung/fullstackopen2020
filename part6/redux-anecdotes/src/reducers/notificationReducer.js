@@ -1,12 +1,17 @@
 const initialState = null
-
+let removeNoti = null
 export const notiSet = (notiMessage, timeOut) => {
+
+  if (removeNoti!==null) {
+    console.log('remove appears')
+    clearTimeout(removeNoti)
+  }
   return async dispatch => {
     await dispatch({
       type: 'SET_NOTI',
       notiMessage
     })
-    setTimeout(() => {
+    removeNoti = setTimeout(() => {
       dispatch({
         type: 'REMOVE_NOTI'
       })

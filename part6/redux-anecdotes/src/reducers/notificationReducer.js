@@ -3,7 +3,6 @@ let removeNoti = null
 export const notiSet = (notiMessage, timeOut) => {
 
   if (removeNoti!==null) {
-    console.log('remove appears')
     clearTimeout(removeNoti)
   }
   return async dispatch => {

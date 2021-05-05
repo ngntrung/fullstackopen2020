@@ -1,1 +1,1 @@
-Solution for part5 exercises 
+Solution for part7 blog exercises 

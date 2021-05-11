@@ -128,7 +128,23 @@ const resolvers = {
   Query: {
     bookCount: () => books.length,
     authorCount: () => authors.length,
-    allBooks: (root, args) => books.filter(book => book.genres.includes(args.genre) && book.author === args.author),
+    allBooks: (root, args) => {
+      console.log(args.genre)
+      console.log(args.author)
+      if (Object.keys(args).length === 0){
+        console.log('full list')
+        return books
+      }
+      const byGenre = (book) => {
+        return args.genre ? book.genres.includes(args.genre) : book.genres
+        
+      }
+        
+      const byAuthor = (book) => {
+        return book.author.includes(args.author ? args.author : book.author)
+      }
+      return books.filter(byAuthor).filter(byGenre)
+    },
     allAuthors: () => authors
   },
 

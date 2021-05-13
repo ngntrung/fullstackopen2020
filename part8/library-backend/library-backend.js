@@ -129,15 +129,11 @@ const resolvers = {
     bookCount: () => books.length,
     authorCount: () => authors.length,
     allBooks: (root, args) => {
-      console.log(args.genre)
-      console.log(args.author)
       if (Object.keys(args).length === 0){
-        console.log('full list')
         return books
       }
       const byGenre = (book) => {
         return args.genre ? book.genres.includes(args.genre) : book.genres
-        
       }
         
       const byAuthor = (book) => {
@@ -164,10 +160,10 @@ const resolvers = {
   Mutation: {
     addBook: (root, args) => {
       const book = {...args, id: uuid()}
-      books = books.concat(book)
       if (!books.find(book => book.author === args.author)){
-        authors = authors.concat(args.author)
+        authors = authors.concat({ name: args.author })
       }
+      books = books.concat(book)
       return book
     },
 

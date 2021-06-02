@@ -9,7 +9,7 @@ const JWT_SECRET = 'NEED_HERE_A_SECRET_KEY'
 const { PubSub } = require('apollo-server')
 const pubsub = new PubSub()
 
-const MONGODB_URI = 'mongodb+srv://fullstackopen:Fullstackopen2021@cluster0.wqevb.mongodb.net/Library?retryWrites=true&w=majority'
+const MONGODB_URI = 'mongodb+srv://fullstackopen:Secretkey@cluster0.wqevb.mongodb.net/Library?retryWrites=true&w=majority'
 console.log('connecting to', MONGODB_URI)
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
   .then(() => {

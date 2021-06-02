@@ -1,21 +1,58 @@
-import React from 'react'
-import { useQuery } from '@apollo/client'
+import React, { useState, useEffect } from 'react'
+import { useQuery, useLazyQuery } from '@apollo/client'
 import { ALL_BOOKS } from '../queries'
 
 const Books = (props) => {
-  const results = useQuery(ALL_BOOKS)
+  const [filterList, setFilterList] = useState([])
+  const [filterSelected, setFilterSelected] = useState(null)
+  const [getBooks, results] = useLazyQuery(ALL_BOOKS)
+  const [books, setBooks] = useState([])
+  const booksQuery = useQuery(ALL_BOOKS, {
+    variables: {genre: "", author: ""}
+  })
+  const fetchBook = (genre) => {
+    getBooks({ variables: { genre: genre, author: "" } })
+    setFilterSelected(genre)
+  }
+
+  useEffect(() => {
+    if (results.data) {
+      setBooks(results.data.allBooks)
+    }
+  }, [results])
+
+  useEffect(() => {
+    if (booksQuery.data) {
+      setBooks(booksQuery.data.allBooks)
+      setFilterList(Array.from(new Set(booksQuery.data.allBooks.map(book => book.genres).flat())))
+    }
+  }, [booksQuery])
+
+  /*
+  useEffect(() => {
+    if (books) {
+      setFilterList(Array.from(new Set(books.map(book => book.genres).flat())))
+    }
+  }, [books])
+  */
+
+  if (booksQuery.loading){
+    return (
+      <div>...loading</div>
+    )
+  }
+
   if (!props.show) {
     return null
   }
-  if (results.loading){
-    return <div>loading....</div>
-  }
-  const books = results.data.allBooks
-
+  /*
+  const filterBooks = books.filter(book => filter ? book.genres.includes(filter) : book)
+  const filterList = Array.from(new Set(books.map(book => book.genres).flat()))
+  */
   return (
     <div>
       <h2>books</h2>
-
+      {filterSelected ? <p>in genres <b>{filterSelected}</b></p> : null}
       <table>
         <tbody>
           <tr>
@@ -30,12 +67,14 @@ const Books = (props) => {
           {books.map(a =>
             <tr key={a.title}>
               <td>{a.title}</td>
-              <td>{a.author}</td>
+              <td>{a.author.name}</td>
               <td>{a.published}</td>
             </tr>
           )}
         </tbody>
       </table>
+      {filterList.map((item, index) => <button key={index} onClick= {() => fetchBook(item) }> { item } </button>)}
+      <button onClick = { ()=> fetchBook('') }>all genres</button>
     </div>
   )
 }
